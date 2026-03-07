@@ -1,0 +1,47 @@
+name: add-dark-mode
+description: 为应用添加深色模式支持
+version: 1.0.0
+status: draft
+
+artifacts:
+  - id: proposal
+    type: proposal
+    title: 深色模式提案
+    description: 阐述为什么要做深色模式以及改动范围
+    status: ready
+
+  - id: specs
+    type: specs
+    title: 需求规格
+    description: 深色模式的功能需求和使用场景
+    status: pending
+    dependencies:
+      - proposal
+
+  - id: design
+    type: design
+    title: 技术设计
+    description: 深色模式的技术实现方案
+    status: pending
+    dependencies:
+      - specs
+
+  - id: tasks
+    type: tasks
+    title: 实现任务
+    description: 具体的实现任务清单
+    status: pending
+    dependencies:
+      - design
+
+apply:
+  requires:
+    - tasks
+  tasks: []
+
+complete:
+  requires:
+    - proposal
+    - specs
+    - design
+    - tasks
