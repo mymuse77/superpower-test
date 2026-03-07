@@ -19,6 +19,18 @@
             --transition: all 0.3s ease;
         }
 
+        [data-theme="dark"] {
+            --primary: #dfe6e9;
+            --secondary: #b2bec3;
+            --accent: #00d9a5;
+            --accent-hover: #00b894;
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #dfe6e9;
+            --text-light: #b2bec3;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -118,6 +130,74 @@
             width: 25px;
             height: 2px;
             background: var(--primary);
+            transition: var(--transition);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-toggle .icon {
+            position: absolute;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        .theme-toggle .moon-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0);
+        }
+
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0);
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        /* Theme transition - optimized for performance */
+        body,
+        header,
+        main,
+        footer,
+        .card,
+        .feature,
+        .quote-section,
+        .hero {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Disable transition on elements that shouldn't animate */
+        .theme-toggle,
+        .btn,
+        nav a,
+        .menu-toggle {
             transition: var(--transition);
         }
 
@@ -289,6 +369,10 @@
             padding: 3rem 2rem;
         }
 
+        [data-theme="dark"] footer {
+            background: #0f0f1a;
+        }
+
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -382,6 +466,388 @@
                 font-size: 1.1rem;
             }
         }
+
+        /* ============================================
+           组件深色模式适配 - 阶段 3
+           ============================================ */
+
+        /* T3.1 按钮组件 (Button) */
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
+        }
+
+        /* 按钮变体 */
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--text-light);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        [data-theme="dark"] .btn-outline {
+            border-color: var(--accent);
+        }
+
+        [data-theme="dark"] .btn-outline:hover {
+            background: var(--accent);
+            color: #1a1a2e;
+        }
+
+        /* T3.2 输入框组件 (Input) */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .input {
+            border-color: #2d3748;
+            background: #1a1a2e;
+            color: var(--text);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
+        }
+
+        [data-theme="dark"] .input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 217, 165, 0.2);
+        }
+
+        .input::placeholder {
+            color: var(--text-light);
+        }
+
+        /* T3.3 卡片组件 (Card) - 已在主样式中适配 */
+
+        /* T3.4 导航栏 (Navbar) - 已在主样式中适配 */
+
+        /* T3.5 侧边栏 (Sidebar) */
+        .sidebar {
+            background: var(--card-bg);
+            border-right: 1px solid #e0e0e0;
+            width: 250px;
+            height: calc(100vh - 70px);
+            position: fixed;
+            left: 0;
+            top: 70px;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .sidebar {
+            border-right-color: #2d3748;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: var(--bg);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .sidebar-menu .icon {
+            font-size: 1.25rem;
+        }
+
+        /* T3.6 表格组件 (Table) */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        [data-theme="dark"] th {
+            border-bottom-color: #2d3748;
+        }
+
+        td {
+            padding: 1rem;
+            color: var(--text-light);
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        [data-theme="dark"] td {
+            border-bottom-color: #2d3748;
+        }
+
+        tr:hover td {
+            background: var(--bg);
+        }
+
+        /* T3.7 对话框组件 (Dialog) */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .dialog-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dialog {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .dialog-overlay.active .dialog {
+            transform: scale(1);
+        }
+
+        .dialog-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        [data-theme="dark"] .dialog-header {
+            border-bottom-color: #2d3748;
+        }
+
+        .dialog-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .dialog-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0.25rem;
+            line-height: 1;
+        }
+
+        .dialog-close:hover {
+            color: var(--text);
+        }
+
+        .dialog-body {
+            padding: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .dialog-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        [data-theme="dark"] .dialog-footer {
+            border-top-color: #2d3748;
+        }
+
+        /* T3.8 下拉菜单 (Dropdown) */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 0.9375rem;
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] .dropdown-toggle {
+            border-color: #2d3748;
+            background: #1a1a2e;
+        }
+
+        .dropdown-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            min-width: 180px;
+            background: var(--card-bg);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        [data-theme="dark"] .dropdown-menu {
+            border-color: #2d3748;
+        }
+
+        .dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg);
+            color: var(--accent);
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 0.5rem 0;
+        }
+
+        [data-theme="dark"] .dropdown-divider {
+            background: #2d3748;
+        }
+
+        /* Hero 深色模式 */
+        [data-theme="dark"] .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        /* Card icon 深色模式 */
+        [data-theme="dark"] .card-icon {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        }
+
+        /* Section title */
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -402,6 +868,10 @@
                 <a href="#cards">卡片</a>
                 <a href="#about">关于</a>
             </nav>
+            <button class="theme-toggle" onclick="Theme.toggleTheme()" aria-label="切换主题">
+                <span class="icon sun-icon">☀️</span>
+                <span class="icon moon-icon">🌙</span>
+            </button>
         </div>
     </header>
 
@@ -486,6 +956,156 @@
             <p class="quote">"好的设计不仅美观，更要好用。每一个细节都值得用心打磨。"</p>
             <p class="quote-author">— 设计理念</p>
         </section>
+
+        <!-- 组件示例区域 -->
+        <section id="components">
+            <h2 class="section-title">UI 组件</h2>
+            <p class="section-subtitle">以下是各组件的深色模式适配演示</p>
+
+            <!-- T3.1 按钮组件 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.1 按钮 (Button)</h3>
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn">主要按钮</button>
+                    <button class="btn btn-secondary">次要按钮</button>
+                    <button class="btn btn-outline">轮廓按钮</button>
+                </div>
+            </div>
+
+            <!-- T3.2 输入框组件 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.2 输入框 (Input)</h3>
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="input-group">
+                    <label>用户名</label>
+                    <input type="text" class="input" placeholder="请输入用户名">
+                </div>
+                <div class="input-group">
+                    <label>邮箱</label>
+                    <input type="email" class="input" placeholder="example@mail.com">
+                </div>
+                <div class="input-group">
+                    <label>密码</label>
+                    <input type="password" class="input" placeholder="请输入密码">
+                </div>
+            </div>
+
+            <!-- T3.3 卡片组件 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.3 卡片 (Card)</h3>
+            <div class="cards-grid" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>卡片标题</h3>
+                    <p>卡片内容示例，这是一段描述文字。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📦</div>
+                    <h3>另一个卡片</h3>
+                    <p>深色模式下自动适配的卡片组件。</p>
+                </div>
+            </div>
+
+            <!-- T3.4 导航栏 (Navbar) -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.4 导航栏 (Navbar)</h3>
+            <p class="section-subtitle">见页面顶部固定导航栏，已适配深色模式</p>
+
+            <!-- T3.5 侧边栏 (Sidebar) -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.5 侧边栏 (Sidebar)</h3>
+            <div class="table-container" style="margin-bottom: 2rem;">
+                <ul class="sidebar-menu" style="padding: 0;">
+                    <li><a href="#" class="active"><span class="icon">🏠</span>仪表盘</a></li>
+                    <li><a href="#"><span class="icon">📊</span>数据分析</a></li>
+                    <li><a href="#"><span class="icon">👥</span>用户管理</a></li>
+                    <li><a href="#"><span class="icon">⚙️</span>系统设置</a></li>
+                    <li><a href="#"><span class="icon">📁</span>文件管理</a></li>
+                </ul>
+            </div>
+
+            <!-- T3.6 表格组件 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.6 表格 (Table)</h3>
+            <div class="table-container" style="margin-bottom: 2rem;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>邮箱</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>张三</td>
+                            <td>zhangsan@example.com</td>
+                            <td><span style="color: var(--accent);">● 活跃</span></td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>李四</td>
+                            <td>lisi@example.com</td>
+                            <td><span style="color: var(--text-light);">● 待审核</span></td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>王五</td>
+                            <td>wangwu@example.com</td>
+                            <td><span style="color: var(--accent);">● 活跃</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- T3.7 对话框组件 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.7 对话框 (Dialog)</h3>
+            <div class="card" style="margin-bottom: 2rem;">
+                <button class="btn" onclick="toggleDialog()">打开对话框</button>
+                <div class="dialog-overlay" id="dialogOverlay" onclick="closeDialog(event)">
+                    <div class="dialog" onclick="event.stopPropagation()">
+                        <div class="dialog-header">
+                            <span class="dialog-title">确认操作</span>
+                            <button class="dialog-close" onclick="closeDialog()">×</button>
+                        </div>
+                        <div class="dialog-body">
+                            <p>您确定要执行此操作吗？此操作不可撤销。</p>
+                        </div>
+                        <div class="dialog-footer">
+                            <button class="btn btn-secondary" onclick="closeDialog()">取消</button>
+                            <button class="btn" onclick="closeDialog()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- T3.8 下拉菜单 -->
+            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.8 下拉菜单 (Dropdown)</h3>
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                    <div class="dropdown" id="dropdown1">
+                        <button class="dropdown-toggle" onclick="toggleDropdown('dropdown1')">
+                            选择选项 <span>▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">选项 1</a>
+                            <a class="dropdown-item" href="#">选项 2</a>
+                            <a class="dropdown-item" href="#">选项 3</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">更多选项</a>
+                        </div>
+                    </div>
+                    <div class="dropdown" id="dropdown2">
+                        <button class="dropdown-toggle" onclick="toggleDropdown('dropdown2')">
+                            用户菜单 <span>▼</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">个人资料</a>
+                            <a class="dropdown-item" href="#">设置</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer id="about">
@@ -518,10 +1138,98 @@
     </footer>
 
     <script>
+        // Theme Management Module
+        const Theme = (function() {
+            const STORAGE_KEY = 'preferred-theme';
+            let currentTheme = 'light';
+
+            // Get system preferred theme
+            function getSystemTheme() {
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            // Apply theme to document
+            function applyTheme(theme) {
+                currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+
+            // Get current theme
+            function getTheme() {
+                return currentTheme;
+            }
+
+            // Set theme (and persist)
+            function setTheme(theme) {
+                applyTheme(theme);
+                localStorage.setItem(STORAGE_KEY, theme);
+            }
+
+            // Toggle theme
+            function toggleTheme() {
+                setTheme(currentTheme === 'light' ? 'dark' : 'light');
+            }
+
+            // Initialize theme (load from storage or use system preference)
+            function init() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    applyTheme(stored);
+                } else {
+                    applyTheme(getSystemTheme());
+                }
+
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem(STORAGE_KEY)) {
+                        applyTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
+            }
+
+            // Expose public API
+            return {
+                init,
+                getTheme,
+                setTheme,
+                toggleTheme
+            };
+        })();
+
+        // Initialize theme on load
+        document.addEventListener('DOMContentLoaded', Theme.init);
+
         function toggleMenu() {
             const nav = document.getElementById('nav');
             nav.classList.toggle('active');
         }
+
+        // T3.7 对话框功能
+        function toggleDialog() {
+            const overlay = document.getElementById('dialogOverlay');
+            overlay.classList.toggle('active');
+        }
+
+        function closeDialog(event) {
+            if (!event || event.target === event.currentTarget || event.target.classList.contains('dialog-close') || event.target.closest('.dialog-close')) {
+                document.getElementById('dialogOverlay').classList.remove('active');
+            }
+        }
+
+        // T3.8 下拉菜单功能
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.classList.toggle('active');
+        }
+
+        // 点击外部关闭下拉菜单
+        document.addEventListener('click', function(e) {
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
