@@ -359,6 +359,16 @@
             box-shadow: var(--shadow-lg);
         }
 
+        /* Dark mode primary button - slightly brighter for contrast */
+        [data-theme="dark"] .btn-primary {
+            background: var(--color-primary);
+            color: #1A1A1A;
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background: var(--color-primary-light);
+        }
+
         .btn-secondary {
             background: var(--color-surface);
             color: var(--color-text);
@@ -368,6 +378,18 @@
         .btn-secondary:hover {
             border-color: var(--color-primary);
             transform: translateY(-2px);
+        }
+
+        /* Dark mode secondary - lighter for contrast */
+        [data-theme="dark"] .btn-secondary {
+            background: var(--color-surface-raised);
+            color: var(--color-bg);
+            border-color: var(--color-text-muted);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            border-color: var(--color-primary);
+            background: var(--color-surface);
         }
 
         /* Accent Button - Vibrant Coral */
@@ -383,10 +405,11 @@
             box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
         }
 
+        /* Dark mode accent - bright coral stands out */
         [data-theme="dark"] .btn-accent {
             background: #FF8A80;
             color: #1A1A1A;
-            box-shadow: 0 4px 15px rgba(255, 138, 128, 0.25);
+            box-shadow: 0 4px 15px rgba(255, 138, 128, 0.3);
         }
 
         [data-theme="dark"] .btn-accent:hover {
