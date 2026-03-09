@@ -65,9 +65,9 @@
             --color-bg: #1A1A1A;
             --color-surface: #242424;
             --color-surface-raised: #2D2D2D;
-            --color-text: #FAFAF8;
-            --color-text-muted: #A0A0A0;
-            --color-text-subtle: #6B6B6B;
+            --color-text: #FFFFFF;
+            --color-text-muted: #C8C8C8;
+            --color-text-subtle: #8A8A8A;
             --color-primary: #E8967A;
             --color-primary-dark: #D0856C;
             --color-accent: #F4D06F;
@@ -818,7 +818,7 @@
         }
 
         .footer-brand p {
-            color: rgba(255,255,255,0.6);
+            color: var(--color-text-muted);
             font-size: 0.9rem;
         }
 
@@ -841,7 +841,7 @@
         }
 
         .footer-links a {
-            color: rgba(255,255,255,0.6);
+            color: var(--color-text-muted);
             font-size: 0.9rem;
             transition: color 0.2s ease;
         }
@@ -852,9 +852,9 @@
 
         .footer-bottom {
             padding-top: var(--space-xl);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--color-surface-raised);
             text-align: center;
-            color: rgba(255,255,255,0.4);
+            color: var(--color-text-subtle);
             font-size: 0.85rem;
         }
 
