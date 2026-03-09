@@ -398,28 +398,29 @@
             color: #1A1A1A;
         }
 
-        /* Accent Button - Vibrant Coral */
+        /* Accent Button - Warm Yellow (unified with primary palette) */
         .btn-accent {
-            background: #FF6B6B;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
+            background: var(--color-accent-warm);
+            color: #1A1A1A;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(244, 208, 111, 0.3);
         }
 
         .btn-accent:hover {
-            background: #ff5252;
+            background: #E8C65A;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.45);
+            box-shadow: 0 6px 20px rgba(244, 208, 111, 0.4);
         }
 
-        /* Dark mode accent - bright coral stands out */
+        /* Dark mode accent */
         [data-theme="dark"] .btn-accent {
-            background: #FF8A80;
+            background: var(--color-accent-warm);
             color: #1A1A1A;
-            box-shadow: 0 4px 15px rgba(255, 138, 128, 0.3);
+            box-shadow: 0 4px 15px rgba(244, 208, 111, 0.2);
         }
 
         [data-theme="dark"] .btn-accent:hover {
-            background: #FFAB91;
+            background: #FFE082;
         }
 
         /* Hero Visual */
