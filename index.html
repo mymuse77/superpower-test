@@ -359,37 +359,43 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Dark mode primary button - slightly brighter for contrast */
+        /* Dark mode primary button - bright text on dark bg */
         [data-theme="dark"] .btn-primary {
             background: var(--color-primary);
-            color: #1A1A1A;
+            color: #FFFFFF;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         [data-theme="dark"] .btn-primary:hover {
             background: var(--color-primary-light);
+            color: #1A1A1A;
         }
 
         .btn-secondary {
             background: var(--color-surface);
-            color: var(--color-text);
-            border: 2px solid var(--color-surface-raised);
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            font-weight: 600;
         }
 
         .btn-secondary:hover {
-            border-color: var(--color-primary);
+            background: var(--color-primary);
+            color: white;
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Dark mode secondary - lighter for contrast */
+        /* Dark mode secondary - explicit white for visibility */
         [data-theme="dark"] .btn-secondary {
-            background: var(--color-surface-raised);
-            color: var(--color-bg);
-            border-color: var(--color-text-muted);
+            background: transparent;
+            color: #FFFFFF;
+            border: 2px solid #FFFFFF;
         }
 
         [data-theme="dark"] .btn-secondary:hover {
+            background: var(--color-primary);
             border-color: var(--color-primary);
-            background: var(--color-surface);
+            color: #1A1A1A;
         }
 
         /* Accent Button - Vibrant Coral */
