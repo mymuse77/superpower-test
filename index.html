@@ -3,434 +3,869 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>现代静态页面 - 响应式测试</title>
+    <title>Superpower Test — 能力测评</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <style>
+        /* ============================================
+           Design System - Neo-Brutalist × Organic
+           ============================================ */
         :root {
-            --primary: #2d3436;
-            --secondary: #636e72;
-            --accent: #00b894;
-            --accent-hover: #00a885;
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text: #2d3436;
-            --text-light: #636e72;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --radius: 12px;
-            --transition: all 0.3s ease;
+            /* Primary Palette - Warm Terracotta */
+            --color-primary: #E07A5F;
+            --color-primary-dark: #C96A52;
+            --color-primary-light: #F2A890;
+            
+            /* Neutrals - Deep Charcoal */
+            --color-bg: #FAFAF8;
+            --color-surface: #FFFFFF;
+            --color-surface-raised: #F5F3EF;
+            --color-text: #1A1A1A;
+            --color-text-muted: #6B6B6B;
+            --color-text-subtle: #9A9A9A;
+            
+            /* Accent */
+            --color-accent: #3D405B;
+            --color-accent-warm: #F4D06F;
+            
+            /* Semantic */
+            --color-success: #81B29A;
+            --color-warning: #F2CC8F;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2.5rem;
+            --space-2xl: 4rem;
+            --space-3xl: 6rem;
+            
+            /* Typography */
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            
+            /* Effects */
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-xl: 0 20px 50px rgba(0,0,0,0.12);
+            
+            /* Border Radius - intentional mix */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
         }
 
+        /* Dark Mode */
         [data-theme="dark"] {
-            --primary: #dfe6e9;
-            --secondary: #b2bec3;
-            --accent: #00d9a5;
-            --accent-hover: #00b894;
-            --bg: #1a1a2e;
-            --card-bg: #16213e;
-            --text: #dfe6e9;
-            --text-light: #b2bec3;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --color-bg: #1A1A1A;
+            --color-surface: #242424;
+            --color-surface-raised: #2D2D2D;
+            --color-text: #FAFAF8;
+            --color-text-muted: #A0A0A0;
+            --color-text-subtle: #6B6B6B;
+            --color-primary: #E8967A;
+            --color-primary-dark: #D0856C;
+            --color-accent: #F4D06F;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-xl: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        * {
+        /* Reset */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
             line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* Typography Scale */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: clamp(2.5rem, 6vw, 4rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+        p { color: var(--color-text-muted); }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           Layout Structure
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
         }
 
         /* Header */
-        header {
-            background: var(--card-bg);
-            box-shadow: var(--shadow);
-            position: sticky;
+        .header {
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-surface-raised);
+            transition: all 0.3s ease;
         }
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
+        .header-inner {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            height: 72px;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: -0.03em;
         }
 
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--accent), #55efc4);
-            border-radius: 8px;
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: var(--color-primary);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
         }
 
-        nav {
+        .logo:hover .logo-mark {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .nav {
             display: flex;
-            gap: 2rem;
+            align-items: center;
+            gap: var(--space-xl);
         }
 
-        nav a {
-            color: var(--text-light);
-            text-decoration: none;
+        .nav-link {
+            font-family: var(--font-display);
             font-weight: 500;
-            transition: var(--transition);
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
             position: relative;
+            transition: color 0.2s ease;
         }
 
-        nav a::after {
+        .nav-link::after {
             content: '';
             position: absolute;
             bottom: -4px;
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--accent);
-            transition: var(--transition);
+            background: var(--color-primary);
+            transition: width 0.3s ease;
         }
 
-        nav a:hover {
-            color: var(--accent);
+        .nav-link:hover {
+            color: var(--color-text);
         }
 
-        nav a:hover::after {
+        .nav-link:hover::after {
             width: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
         }
 
         /* Theme Toggle */
         .theme-toggle {
             width: 44px;
             height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: var(--bg);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-surface-raised);
+            background: var(--color-surface);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        /* Menu Toggle (Mobile) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: var(--color-text);
+            transition: all 0.3s ease;
+        }
+
+        /* ============================================
+           Hero Section - Bold & Asymmetric
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 72px;
             position: relative;
             overflow: hidden;
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .theme-toggle .icon {
+        .hero::before {
+            content: '';
             position: absolute;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            top: -20%;
+            right: -10%;
+            width: 60%;
+            height: 80%;
+            background: radial-gradient(ellipse at center, var(--color-primary-light) 0%, transparent 70%);
+            opacity: 0.15;
+            z-index: -1;
+            animation: heroGlow 8s ease-in-out infinite alternate;
         }
 
-        .theme-toggle .sun-icon {
-            opacity: 1;
-            transform: rotate(0deg) scale(1);
+        @keyframes heroGlow {
+            0% { transform: scale(1); opacity: 0.15; }
+            100% { transform: scale(1.1); opacity: 0.2; }
         }
 
-        .theme-toggle .moon-icon {
-            opacity: 0;
-            transform: rotate(-90deg) scale(0);
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: var(--space-3xl);
+            align-items: center;
         }
 
-        [data-theme="dark"] .theme-toggle .sun-icon {
-            opacity: 0;
-            transform: rotate(90deg) scale(0);
+        .hero-content {
+            animation: slideUp 0.8s ease-out;
         }
 
-        [data-theme="dark"] .theme-toggle .moon-icon {
-            opacity: 1;
-            transform: rotate(0deg) scale(1);
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Theme transition - optimized for performance */
-        body,
-        header,
-        main,
-        footer,
-        .card,
-        .feature,
-        .quote-section,
-        .hero {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* Disable transition on elements that shouldn't animate */
-        .theme-toggle,
-        .btn,
-        nav a,
-        .menu-toggle {
-            transition: var(--transition);
-        }
-
-        /* Main Content */
-        main {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: var(--radius);
-            margin-bottom: 3rem;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) var(--space-md);
+            background: var(--color-accent-warm);
+            color: var(--color-text);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.8rem;
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-lg);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            margin-bottom: var(--space-lg);
         }
 
-        .hero p {
-            font-size: 1.125rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 2rem;
+        .hero h1 span {
+            color: var(--color-primary);
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            max-width: 520px;
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
 
         .btn {
-            display: inline-block;
-            padding: 0.875rem 2rem;
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: 1rem 2rem;
+            font-family: var(--font-display);
             font-weight: 600;
-            transition: var(--transition);
+            font-size: 0.95rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
         }
 
-        .btn:hover {
-            background: var(--accent-hover);
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Cards Grid */
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-text);
+            border: 2px solid var(--color-surface-raised);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            transform: rotate(2deg);
+            transition: transform 0.4s ease;
+        }
+
+        .hero-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-card-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: var(--radius-full);
+        }
+
+        .hero-card-dot:nth-child(1) { background: #FF6B6B; }
+        .hero-card-dot:nth-child(2) { background: #FFE66D; }
+        .hero-card-dot:nth-child(3) { background: #4ECDC4; }
+
+        .hero-stat {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .hero-stat-item {
+            padding: var(--space-lg);
+            background: var(--color-surface-raised);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-primary);
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        /* ============================================
+           Features - Grid with Personality
+           ============================================ */
+        .features {
+            padding: var(--space-3xl) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-sm);
+        }
+
         .section-title {
-            font-size: 1.75rem;
-            margin-bottom: 2rem;
-            color: var(--primary);
+            margin-bottom: var(--space-md);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .feature-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            transition: all 0.4s ease;
+            border: 1px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-light);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--color-surface-raised);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--color-primary);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            margin-bottom: var(--space-sm);
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           Cards Section - Asymmetric Grid
+           ============================================ */
+        .cards {
+            padding: var(--space-3xl) 0;
+            background: var(--color-surface-raised);
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: var(--space-lg);
         }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+        .content-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card:hover {
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--color-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .content-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .content-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            box-shadow: var(--shadow-lg);
         }
 
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
+        /* First card spans 2 columns */
+        .content-card.large {
+            grid-column: span 2;
         }
 
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
+        /* Different sizes */
+        .content-card:nth-child(2) { border-radius: var(--radius-xl); }
+        .content-card:nth-child(4) { border-radius: var(--radius-md); }
+        .content-card:nth-child(5) { border-radius: var(--radius-sm); }
+
+        .card-emoji {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            display: block;
         }
 
-        .card p {
-            color: var(--text-light);
-            font-size: 0.9375rem;
+        .content-card h3 {
+            margin-bottom: var(--space-sm);
         }
 
-        /* Features Section */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+        .content-card p {
+            font-size: 0.95rem;
         }
 
-        .feature {
-            display: flex;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-        }
-
-        .feature-number {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .feature-content h4 {
-            margin-bottom: 0.25rem;
-            color: var(--primary);
-        }
-
-        .feature-content p {
-            font-size: 0.875rem;
-            color: var(--text-light);
-        }
-
-        /* Quote Section */
+        /* ============================================
+           Quote Section - Bold Typography
+           ============================================ */
         .quote-section {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 3rem;
+            padding: var(--space-3xl) 0;
             text-align: center;
-            box-shadow: var(--shadow);
-            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .quote-section::before {
+            content: '"';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-display);
+            font-size: 20rem;
+            font-weight: 800;
+            color: var(--color-surface-raised);
+            line-height: 1;
+            z-index: -1;
         }
 
         .quote {
-            font-size: 1.25rem;
-            font-style: italic;
-            color: var(--text-light);
-            max-width: 700px;
-            margin: 0 auto 1rem;
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--color-text);
+            max-width: 800px;
+            margin: 0 auto var(--space-lg);
+            line-height: 1.4;
         }
 
         .quote-author {
-            color: var(--accent);
+            font-family: var(--font-display);
+            font-weight: 500;
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           Components Showcase
+           ============================================ */
+        .components {
+            padding: var(--space-3xl) 0;
+            background: var(--color-surface-raised);
+        }
+
+        .component-section {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .component-title {
+            font-size: 1rem;
             font-weight: 600;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-lg);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: white;
-            padding: 3rem 2rem;
+        /* Button showcase */
+        .button-showcase {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
 
-        [data-theme="dark"] footer {
-            background: #0f0f1a;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Input showcase */
+        .input-showcase {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            gap: var(--space-lg);
+            max-width: 400px;
         }
 
-        .footer-section h4 {
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .footer-section p,
-        .footer-section a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
+        .input-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9375rem;
-            transition: var(--transition);
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+            font-size: 0.9rem;
         }
 
-        .footer-section a:hover {
-            color: var(--accent);
+        .input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--color-surface-raised);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: var(--font-body);
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all 0.2s ease;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(224, 122, 95, 0.1);
+        }
+
+        .input::placeholder {
+            color: var(--color-text-subtle);
+        }
+
+        /* Table showcase */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-container th {
+            text-align: left;
+            padding: var(--space-md);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            background: var(--color-surface-raised);
+            border-bottom: 2px solid var(--color-surface);
+        }
+
+        .table-container td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--color-surface-raised);
+        }
+
+        .table-container tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-container tr:hover td {
+            background: var(--color-surface-raised);
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .status-active .status-dot { background: var(--color-success); }
+        .status-pending .status-dot { background: var(--color-warning); }
+
+        /* ============================================
+           Footer
+           ============================================ */
+        .footer {
+            background: var(--color-text);
+            color: var(--color-bg);
+            padding: var(--space-3xl) 0 var(--space-xl);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .footer-brand {
+            max-width: 280px;
+        }
+
+        .footer-brand .logo {
+            color: var(--color-bg);
+            margin-bottom: var(--space-md);
+        }
+
+        .footer-brand .logo-mark {
+            background: var(--color-primary);
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        .footer-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-lg);
+            color: var(--color-bg);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-primary-light);
         }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 2rem auto 0;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--space-xl);
+            border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.875rem;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 1rem;
+        /* ============================================
+           Responsive Design
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
             }
 
-            nav {
+            .hero-description {
+                margin: 0 auto var(--space-xl);
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-card.large {
+                grid-column: span 2;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
                 display: none;
                 position: absolute;
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--card-bg);
+                background: var(--color-surface);
                 flex-direction: column;
-                padding: 1rem 2rem;
-                gap: 1rem;
-                box-shadow: var(--shadow);
+                padding: var(--space-lg);
+                gap: var(--space-md);
+                border-top: 1px solid var(--color-surface-raised);
             }
 
-            nav.active {
+            .nav.active {
                 display: flex;
             }
 
@@ -438,739 +873,330 @@
                 display: flex;
             }
 
-            main {
-                padding: 2rem 1rem;
-            }
-
-            .hero {
-                padding: 2rem 1rem;
-            }
-
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
+            .features-grid {
+                grid-template-columns: 1fr;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
             }
 
-            .quote-section {
-                padding: 2rem 1rem;
+            .content-card.large {
+                grid-column: span 1;
             }
 
-            .quote {
-                font-size: 1.1rem;
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* ============================================
-           组件深色模式适配 - 阶段 3
-           ============================================ */
-
-        /* T3.1 按钮组件 (Button) */
-        .btn {
-            display: inline-block;
-            padding: 0.875rem 2rem;
-            background: var(--accent);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
-        }
-
-        /* 按钮变体 */
-        .btn-secondary {
-            background: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--text-light);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-outline:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        [data-theme="dark"] .btn-outline {
-            border-color: var(--accent);
-        }
-
-        [data-theme="dark"] .btn-outline:hover {
-            background: var(--accent);
-            color: #1a1a2e;
-        }
-
-        /* T3.2 输入框组件 (Input) */
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: white;
-            color: var(--text);
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .input {
-            border-color: #2d3748;
-            background: #1a1a2e;
-            color: var(--text);
-        }
-
-        .input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
-        }
-
-        [data-theme="dark"] .input:focus {
-            box-shadow: 0 0 0 3px rgba(0, 217, 165, 0.2);
-        }
-
-        .input::placeholder {
-            color: var(--text-light);
-        }
-
-        /* T3.3 卡片组件 (Card) - 已在主样式中适配 */
-
-        /* T3.4 导航栏 (Navbar) - 已在主样式中适配 */
-
-        /* T3.5 侧边栏 (Sidebar) */
-        .sidebar {
-            background: var(--card-bg);
-            border-right: 1px solid #e0e0e0;
-            width: 250px;
-            height: calc(100vh - 70px);
-            position: fixed;
-            left: 0;
-            top: 70px;
-            padding: 1.5rem 0;
-            overflow-y: auto;
-            box-shadow: var(--shadow);
-        }
-
-        [data-theme="dark"] .sidebar {
-            border-right-color: #2d3748;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li {
-            margin: 0;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.875rem 1.5rem;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: var(--transition);
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover,
-        .sidebar-menu a.active {
-            background: var(--bg);
-            color: var(--accent);
-            border-left-color: var(--accent);
-        }
-
-        .sidebar-menu .icon {
-            font-size: 1.25rem;
-        }
-
-        /* T3.6 表格组件 (Table) */
-        .table-container {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: var(--bg);
-        }
-
-        th {
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text);
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        [data-theme="dark"] th {
-            border-bottom-color: #2d3748;
-        }
-
-        td {
-            padding: 1rem;
-            color: var(--text-light);
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        [data-theme="dark"] td {
-            border-bottom-color: #2d3748;
-        }
-
-        tr:hover td {
-            background: var(--bg);
-        }
-
-        /* T3.7 对话框组件 (Dialog) */
-        .dialog-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .dialog-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .dialog {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 90%;
-            transform: scale(0.9);
-            transition: var(--transition);
-        }
-
-        .dialog-overlay.active .dialog {
-            transform: scale(1);
-        }
-
-        .dialog-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        [data-theme="dark"] .dialog-header {
-            border-bottom-color: #2d3748;
-        }
-
-        .dialog-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .dialog-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-            padding: 0.25rem;
-            line-height: 1;
-        }
-
-        .dialog-close:hover {
-            color: var(--text);
-        }
-
-        .dialog-body {
-            padding: 1.5rem;
-            color: var(--text-light);
-        }
-
-        .dialog-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        [data-theme="dark"] .dialog-footer {
-            border-top-color: #2d3748;
-        }
-
-        /* T3.8 下拉菜单 (Dropdown) */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--card-bg);
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            color: var(--text);
-            font-size: 0.9375rem;
-            transition: var(--transition);
-        }
-
-        [data-theme="dark"] .dropdown-toggle {
-            border-color: #2d3748;
-            background: #1a1a2e;
-        }
-
-        .dropdown-toggle:hover {
-            border-color: var(--accent);
-        }
-
-        .dropdown-menu {
+        /* Utility */
+        .sr-only {
             position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            min-width: 180px;
-            background: var(--card-bg);
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: var(--transition);
-            z-index: 100;
-        }
-
-        [data-theme="dark"] .dropdown-menu {
-            border-color: #2d3748;
-        }
-
-        .dropdown.active .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--text-light);
-            text-decoration: none;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .dropdown-item:hover {
-            background: var(--bg);
-            color: var(--accent);
-        }
-
-        .dropdown-item:first-child {
-            border-radius: 8px 8px 0 0;
-        }
-
-        .dropdown-item:last-child {
-            border-radius: 0 0 8px 8px;
-        }
-
-        .dropdown-divider {
+            width: 1px;
             height: 1px;
-            background: #e0e0e0;
-            margin: 0.5rem 0;
-        }
-
-        [data-theme="dark"] .dropdown-divider {
-            background: #2d3748;
-        }
-
-        /* Hero 深色模式 */
-        [data-theme="dark"] .hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
-        /* Card icon 深色模式 */
-        [data-theme="dark"] .card-icon {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-        }
-
-        /* Section title */
-        .section-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-top: 0.5rem;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">M</div>
-                <span>ModernPage</span>
-            </div>
-            <div class="menu-toggle" onclick="toggleMenu()">
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <span class="logo-mark">S</span>
+                <span>Superpower</span>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            <nav id="nav">
-                <a href="#home">首页</a>
-                <a href="#features">特性</a>
-                <a href="#cards">卡片</a>
-                <a href="#about">关于</a>
+            <nav class="nav" id="nav">
+                <a href="#hero" class="nav-link">首页</a>
+                <a href="#features" class="nav-link">特性</a>
+                <a href="#cards" class="nav-link">卡片</a>
+                <a href="#components" class="nav-link">组件</a>
+                <a href="#about" class="nav-link">关于</a>
             </nav>
             <button class="theme-toggle" onclick="Theme.toggleTheme()" aria-label="切换主题">
-                <span class="icon sun-icon">☀️</span>
-                <span class="icon moon-icon">🌙</span>
+                <span class="theme-icon">☀️</span>
             </button>
         </div>
     </header>
 
-    <main>
-        <section class="hero" id="home">
-            <h1>欢迎来到现代静态页面</h1>
-            <p>这是一个精美的响应式 HTML 页面示例，展示现代 CSS 技术的强大功能。使用 Flexbox 和 Grid 构建，完美适配各种设备。</p>
-            <a href="#features" class="btn">了解更多</a>
-        </section>
-
-        <section id="features">
-            <h2 class="section-title">核心特性</h2>
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-number">1</div>
-                    <div class="feature-content">
-                        <h4>响应式设计</h4>
-                        <p>完美适配桌面、平板和手机等各种屏幕尺寸</p>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container hero-inner">
+            <div class="hero-content">
+                <span class="hero-badge">✨ 能力测评</span>
+                <h1>发现你的<span>超能力</span></h1>
+                <p class="hero-description">
+                    科学的测评体系，帮助你全面认识自己的优势与潜力。
+                    基于大数据分析，提供个性化的成长建议。
+                </p>
+                <div class="hero-cta">
+                    <a href="#features" class="btn btn-primary">开始测评 →</a>
+                    <a href="#about" class="btn btn-secondary">了解更多</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-card-header">
+                        <span class="hero-card-dot"></span>
+                        <span class="hero-card-dot"></span>
+                        <span class="hero-card-dot"></span>
                     </div>
-                </div>
-                <div class="feature">
-                    <div class="feature-number">2</div>
-                    <div class="feature-content">
-                        <h4>现代 CSS</h4>
-                        <p>使用 CSS Grid 和 Flexbox 实现灵活的布局</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <div class="feature-number">3</div>
-                    <div class="feature-content">
-                        <h4>流畅动画</h4>
-                        <p>平滑的过渡效果和交互动画提升用户体验</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <div class="feature-number">4</div>
-                    <div class="feature-content">
-                        <h4>清晰结构</h4>
-                        <p>语义化的 HTML5 标签，代码清晰易维护</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="cards">
-            <h2 class="section-title">内容卡片</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🎨</div>
-                    <h3>现代设计</h3>
-                    <p>采用当下流行的设计趋势，清爽的配色和精致的细节处理，打造专业美观的界面。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">⚡</div>
-                    <h3>高性能</h3>
-                    <p>纯静态页面，加载速度快，无需后端支持，适合快速部署和展示场景。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔧</div>
-                    <h3>易于定制</h3>
-                    <p>CSS 变量驱动的设计系统，方便根据需求调整主题颜色和样式。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📱</div>
-                    <h3>移动优先</h3>
-                    <p>从移动端出发，逐步增强的响应式设计，确保在所有设备上都有良好体验。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">♿</div>
-                    <h3>无障碍</h3>
-                    <p>遵循 Web 内容无障碍指南，确保所有用户都能方便地访问内容。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🌐</div>
-                    <h3>多语言支持</h3>
-                    <p>完整的国际化支持，轻松实现中英文切换和本地化内容。</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="quote-section">
-            <p class="quote">"好的设计不仅美观，更要好用。每一个细节都值得用心打磨。"</p>
-            <p class="quote-author">— 设计理念</p>
-        </section>
-
-        <!-- 组件示例区域 -->
-        <section id="components">
-            <h2 class="section-title">UI 组件</h2>
-            <p class="section-subtitle">以下是各组件的深色模式适配演示</p>
-
-            <!-- T3.1 按钮组件 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.1 按钮 (Button)</h3>
-            <div class="card" style="margin-bottom: 2rem;">
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <button class="btn">主要按钮</button>
-                    <button class="btn btn-secondary">次要按钮</button>
-                    <button class="btn btn-outline">轮廓按钮</button>
-                </div>
-            </div>
-
-            <!-- T3.2 输入框组件 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.2 输入框 (Input)</h3>
-            <div class="card" style="margin-bottom: 2rem;">
-                <div class="input-group">
-                    <label>用户名</label>
-                    <input type="text" class="input" placeholder="请输入用户名">
-                </div>
-                <div class="input-group">
-                    <label>邮箱</label>
-                    <input type="email" class="input" placeholder="example@mail.com">
-                </div>
-                <div class="input-group">
-                    <label>密码</label>
-                    <input type="password" class="input" placeholder="请输入密码">
-                </div>
-            </div>
-
-            <!-- T3.3 卡片组件 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.3 卡片 (Card)</h3>
-            <div class="cards-grid" style="margin-bottom: 2rem;">
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>卡片标题</h3>
-                    <p>卡片内容示例，这是一段描述文字。</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📦</div>
-                    <h3>另一个卡片</h3>
-                    <p>深色模式下自动适配的卡片组件。</p>
-                </div>
-            </div>
-
-            <!-- T3.4 导航栏 (Navbar) -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.4 导航栏 (Navbar)</h3>
-            <p class="section-subtitle">见页面顶部固定导航栏，已适配深色模式</p>
-
-            <!-- T3.5 侧边栏 (Sidebar) -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.5 侧边栏 (Sidebar)</h3>
-            <div class="table-container" style="margin-bottom: 2rem;">
-                <ul class="sidebar-menu" style="padding: 0;">
-                    <li><a href="#" class="active"><span class="icon">🏠</span>仪表盘</a></li>
-                    <li><a href="#"><span class="icon">📊</span>数据分析</a></li>
-                    <li><a href="#"><span class="icon">👥</span>用户管理</a></li>
-                    <li><a href="#"><span class="icon">⚙️</span>系统设置</a></li>
-                    <li><a href="#"><span class="icon">📁</span>文件管理</a></li>
-                </ul>
-            </div>
-
-            <!-- T3.6 表格组件 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.6 表格 (Table)</h3>
-            <div class="table-container" style="margin-bottom: 2rem;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>姓名</th>
-                            <th>邮箱</th>
-                            <th>状态</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>张三</td>
-                            <td>zhangsan@example.com</td>
-                            <td><span style="color: var(--accent);">● 活跃</span></td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>李四</td>
-                            <td>lisi@example.com</td>
-                            <td><span style="color: var(--text-light);">● 待审核</span></td>
-                        </tr>
-                        <tr>
-                            <td>003</td>
-                            <td>王五</td>
-                            <td>wangwu@example.com</td>
-                            <td><span style="color: var(--accent);">● 活跃</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- T3.7 对话框组件 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.7 对话框 (Dialog)</h3>
-            <div class="card" style="margin-bottom: 2rem;">
-                <button class="btn" onclick="toggleDialog()">打开对话框</button>
-                <div class="dialog-overlay" id="dialogOverlay" onclick="closeDialog(event)">
-                    <div class="dialog" onclick="event.stopPropagation()">
-                        <div class="dialog-header">
-                            <span class="dialog-title">确认操作</span>
-                            <button class="dialog-close" onclick="closeDialog()">×</button>
+                    <div class="hero-stat">
+                        <div class="hero-stat-item">
+                            <div class="hero-stat-value">92%</div>
+                            <div class="hero-stat-label">准确率</div>
                         </div>
-                        <div class="dialog-body">
-                            <p>您确定要执行此操作吗？此操作不可撤销。</p>
+                        <div class="hero-stat-item">
+                            <div class="hero-stat-value">50K+</div>
+                            <div class="hero-stat-label">测评用户</div>
                         </div>
-                        <div class="dialog-footer">
-                            <button class="btn btn-secondary" onclick="closeDialog()">取消</button>
-                            <button class="btn" onclick="closeDialog()">确认</button>
+                        <div class="hero-stat-item">
+                            <div class="hero-stat-value">15+</div>
+                            <div class="hero-stat-label">维度测评</div>
+                        </div>
+                        <div class="hero-stat-item">
+                            <div class="hero-stat-value">4.9</div>
+                            <div class="hero-stat-label">用户评分</div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- T3.8 下拉菜单 -->
-            <h3 style="margin: 2rem 0 1rem; color: var(--primary);">T3.8 下拉菜单 (Dropdown)</h3>
-            <div class="card" style="margin-bottom: 2rem;">
-                <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                    <div class="dropdown" id="dropdown1">
-                        <button class="dropdown-toggle" onclick="toggleDropdown('dropdown1')">
-                            选择选项 <span>▼</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">选项 1</a>
-                            <a class="dropdown-item" href="#">选项 2</a>
-                            <a class="dropdown-item" href="#">选项 3</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">更多选项</a>
-                        </div>
-                    </div>
-                    <div class="dropdown" id="dropdown2">
-                        <button class="dropdown-toggle" onclick="toggleDropdown('dropdown2')">
-                            用户菜单 <span>▼</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">个人资料</a>
-                            <a class="dropdown-item" href="#">设置</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">退出登录</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer id="about">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>关于我们</h4>
-                <p>我们致力于创造美观、实用的网页设计和开发解决方案。</p>
-            </div>
-            <div class="footer-section">
-                <h4>快速链接</h4>
-                <a href="#home">首页</a>
-                <a href="#features">特性</a>
-                <a href="#cards">卡片</a>
-            </div>
-            <div class="footer-section">
-                <h4>联系方式</h4>
-                <p>邮箱: hello@example.com</p>
-                <p>电话: 123-456-7890</p>
-            </div>
-            <div class="footer-section">
-                <h4>关注我们</h4>
-                <a href="#">微博</a>
-                <a href="#">微信</a>
-                <a href="#">GitHub</a>
             </div>
         </div>
-        <div class="footer-bottom">
-            © 2026 ModernPage. All rights reserved.
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">Why Choose Us</p>
+                <h2 class="section-title">为什么选择我们</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>精准测评</h3>
+                    <p>基于心理学与大数据算法，提供科学准确的能力评估报告。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>快速反馈</h3>
+                    <p>即时生成测评结果，让你快速了解自己的优势与不足。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>深度分析</h3>
+                    <p>多维度解析你的能力图谱，包含详细的数据可视化。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>个性化建议</h3>
+                    <p>根据测评结果，提供定制化的成长路径和资源推荐。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="cards" id="cards">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">What You Get</p>
+                <h2 class="section-title">测评内容</h2>
+            </div>
+            <div class="cards-grid">
+                <div class="content-card large">
+                    <span class="card-emoji">🧠</span>
+                    <h3>认知能力测评</h3>
+                    <p>涵盖逻辑思维、空间想象力、记忆力等核心认知维度，全面解析你的思维模式。</p>
+                </div>
+                <div class="content-card">
+                    <span class="card-emoji">💪</span>
+                    <h3>执行力评估</h3>
+                    <p>测评你的目标达成能力、时间管理和自律水平。</p>
+                </div>
+                <div class="content-card">
+                    <span class="card-emoji">🗣️</span>
+                    <h3>沟通能力</h3>
+                    <p>分析你的表达技巧、倾听能力和人际互动风格。</p>
+                </div>
+                <div class="content-card">
+                    <span class="card-emoji">🚀</span>
+                    <h3>创新能力</h3>
+                    <p>评估你的创造力、问题解决能力和思维灵活性。</p>
+                </div>
+                <div class="content-card">
+                    <span class="card-emoji">🌟</span>
+                    <h3>领导力潜能</h3>
+                    <p>发现你的团队影响力与领袖潜质。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <div class="container">
+            <p class="quote">好的设计不仅美观，更要好用。每一个细节都值得用心打磨。</p>
+            <p class="quote-author">— 设计理念</p>
+        </div>
+    </section>
+
+    <!-- Components Section -->
+    <section class="components" id="components">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-label">UI Components</p>
+                <h2 class="section-title">组件示例</h2>
+            </div>
+
+            <!-- Buttons -->
+            <div class="component-section">
+                <h3 class="component-title">按钮 (Buttons)</h3>
+                <div class="button-showcase">
+                    <button class="btn btn-primary">主要按钮</button>
+                    <button class="btn btn-secondary">次要按钮</button>
+                    <button class="btn" style="background: var(--color-accent); color: var(--color-text);">强调按钮</button>
+                </div>
+            </div>
+
+            <!-- Inputs -->
+            <div class="component-section">
+                <h3 class="component-title">输入框 (Inputs)</h3>
+                <div class="input-showcase">
+                    <div class="input-group">
+                        <label>用户名</label>
+                        <input type="text" class="input" placeholder="请输入用户名">
+                    </div>
+                    <div class="input-group">
+                        <label>邮箱地址</label>
+                        <input type="email" class="input" placeholder="example@mail.com">
+                    </div>
+                    <div class="input-group">
+                        <label>密码</label>
+                        <input type="password" class="input" placeholder="请输入密码">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="component-section">
+                <h3 class="component-title">表格 (Table)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>姓名</th>
+                                <th>邮箱</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>001</td>
+                                <td>张三</td>
+                                <td>zhangsan@example.com</td>
+                                <td><span class="status status-active"><span class="status-dot"></span>活跃</span></td>
+                            </tr>
+                            <tr>
+                                <td>002</td>
+                                <td>李四</td>
+                                <td>lisi@example.com</td>
+                                <td><span class="status status-pending"><span class="status-dot"></span>待审核</span></td>
+                            </tr>
+                            <tr>
+                                <td>003</td>
+                                <td>王五</td>
+                                <td>wangwu@example.com</td>
+                                <td><span class="status status-active"><span class="status-dot"></span>活跃</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="about">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-mark">S</span>
+                        <span>Superpower</span>
+                    </a>
+                    <p>帮助你发现并释放潜在能力的科学测评平台。</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">快速链接</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hero">首页</a></li>
+                        <li><a href="#features">特性</a></li>
+                        <li><a href="#cards">卡片</a></li>
+                        <li><a href="#components">组件</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">关于我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">公司介绍</a></li>
+                        <li><a href="#">团队成员</a></li>
+                        <li><a href="#">联系方式</a></li>
+                        <li><a href="#">加入我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-title">关注我们</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">微博</a></li>
+                        <li><a href="#">微信</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 Superpower Test. All rights reserved.
+            </div>
         </div>
     </footer>
 
     <script>
-        // Theme Management Module
+        // Theme Management
         const Theme = (function() {
             const STORAGE_KEY = 'preferred-theme';
             let currentTheme = 'light';
 
-            // Get system preferred theme
             function getSystemTheme() {
                 return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
 
-            // Apply theme to document
             function applyTheme(theme) {
                 currentTheme = theme;
                 document.documentElement.setAttribute('data-theme', theme);
+                document.querySelector('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
             }
 
-            // Get current theme
-            function getTheme() {
-                return currentTheme;
-            }
-
-            // Set theme (and persist)
             function setTheme(theme) {
                 applyTheme(theme);
                 localStorage.setItem(STORAGE_KEY, theme);
             }
 
-            // Toggle theme
             function toggleTheme() {
                 setTheme(currentTheme === 'light' ? 'dark' : 'light');
             }
 
-            // Initialize theme (load from storage or use system preference)
             function init() {
                 const stored = localStorage.getItem(STORAGE_KEY);
                 if (stored) {
@@ -1179,7 +1205,6 @@
                     applyTheme(getSystemTheme());
                 }
 
-                // Listen for system theme changes
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
                     if (!localStorage.getItem(STORAGE_KEY)) {
                         applyTheme(e.matches ? 'dark' : 'light');
@@ -1187,46 +1212,26 @@
                 });
             }
 
-            // Expose public API
-            return {
-                init,
-                getTheme,
-                setTheme,
-                toggleTheme
-            };
+            return { init, toggleTheme };
         })();
 
-        // Initialize theme on load
+        // Initialize
         document.addEventListener('DOMContentLoaded', Theme.init);
 
+        // Mobile Menu
         function toggleMenu() {
-            const nav = document.getElementById('nav');
-            nav.classList.toggle('active');
+            document.getElementById('nav').classList.toggle('active');
         }
 
-        // T3.7 对话框功能
-        function toggleDialog() {
-            const overlay = document.getElementById('dialogOverlay');
-            overlay.classList.toggle('active');
-        }
-
-        function closeDialog(event) {
-            if (!event || event.target === event.currentTarget || event.target.classList.contains('dialog-close') || event.target.closest('.dialog-close')) {
-                document.getElementById('dialogOverlay').classList.remove('active');
-            }
-        }
-
-        // T3.8 下拉菜单功能
-        function toggleDropdown(id) {
-            const dropdown = document.getElementById(id);
-            dropdown.classList.toggle('active');
-        }
-
-        // 点击外部关闭下拉菜单
-        document.addEventListener('click', function(e) {
-            document.querySelectorAll('.dropdown').forEach(dropdown => {
-                if (!dropdown.contains(e.target)) {
-                    dropdown.classList.remove('active');
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Close mobile menu
+                    document.getElementById('nav').classList.remove('active');
                 }
             });
         });
